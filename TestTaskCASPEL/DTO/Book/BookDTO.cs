@@ -1,6 +1,8 @@
-﻿namespace TestTaskCASPEL.Models
+﻿using TestTaskCASPEL.Models;
+
+namespace TestTaskCASPEL.DTO.Book
 {
-    public class Books
+    public class BookDTO
     {
         public int ID { get; set; }
         public string BookName { get; set; }
