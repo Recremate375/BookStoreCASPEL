@@ -1,13 +1,22 @@
+using Microsoft.EntityFrameworkCore;
 using TestTaskCASPEL.Common;
+using TestTaskCASPEL.Data;
+using TestTaskCASPEL.Middlewares;
+using TestTaskCASPEL.Repository;
+using TestTaskCASPEL.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+#region Configure MSSQL
+
+builder.Services.AddDbContext<BookStoreDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("BookStoreConnectionString")));
+
+#endregion
 
 #region Configure AutoMapper
 
@@ -16,7 +25,10 @@ builder.Services.AddAutoMapper(typeof (MappingProfile));
 #endregion
 
 #region
-//Repository
+
+builder.Services.AddTransient<IBookRepository, BookRepository>();
+builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+
 #endregion
 
 var app = builder.Build();
@@ -27,6 +39,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCustomException();
 
 app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
