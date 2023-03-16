@@ -35,10 +35,11 @@ namespace TestTaskCASPEL.Controllers
             return Ok(booksDTO);
         }
 
-        [HttpGet("{name:string}")]
+        [HttpGet]
+        [Route("BooksByName")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<BookDTO>>> GetBooksByName(string name)
+        public async Task<ActionResult<IEnumerable<BookDTO>>> GetBooksByName([FromQuery]string name)
         {
             var books = await _bookRepository.GetBooksByName(name);
             if (books == null)
@@ -51,10 +52,10 @@ namespace TestTaskCASPEL.Controllers
             return Ok(booksDTO);
         }
 
-        [HttpGet("{date:DateOnly}")]
+        [HttpGet("{date:DateTime}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<BookDTO>>> GetBooksByDate(DateOnly date)
+        public async Task<ActionResult<IEnumerable<BookDTO>>> GetBooksByDate(DateTime date)
         {
             var books = await _bookRepository.GetBooksByDate(date);
             if (books == null)

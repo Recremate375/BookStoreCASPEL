@@ -28,7 +28,7 @@ namespace TestTaskCASPEL.Repository
             return true;
         }
 
-        public async Task<List<Books>> GetBooksByDate(DateOnly releaseDate)
+        public async Task<List<Books>> GetBooksByDate(DateTime releaseDate)
         {
             return await _db.Books.Where(x => x.ReleaseDate == releaseDate).ToListAsync();
         }
@@ -43,9 +43,10 @@ namespace TestTaskCASPEL.Repository
             return await _db.Books.FindAsync(id);
         }
 
-        public void Create(Books item)
+        public async Task Create(Books item)
         {
             _db.Books.Add(item);
+            await Save();
         }
 
         public void Update(Books item)
@@ -84,6 +85,11 @@ namespace TestTaskCASPEL.Repository
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public async Task<List<Books>> GetBooksById(int[] id)
+        {
+            return await _db.Books.Where(book => id.Contains(book.ID)).ToListAsync();
         }
     }
 }

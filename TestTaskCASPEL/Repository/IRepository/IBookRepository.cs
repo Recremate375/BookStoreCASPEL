@@ -6,6 +6,7 @@ namespace TestTaskCASPEL.Repository.IRepository
     {
         Task<List<Books>> GetBooksByName(string name);
         bool IsBookExist(string name);
-        Task<List<Books>> GetBooksByDate(DateOnly releaseDate);
+        Task<List<Books>> GetBooksByDate(DateTime releaseDate);
+        Task<List<Books>> GetBooksById(int[] id);
     }
 }

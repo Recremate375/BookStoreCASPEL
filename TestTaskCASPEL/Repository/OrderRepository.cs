@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using TestTaskCASPEL.Data;
+using TestTaskCASPEL.DTO.Order;
 using TestTaskCASPEL.Models;
 using TestTaskCASPEL.Repository.IRepository;
 
@@ -8,14 +10,17 @@ namespace TestTaskCASPEL.Repository
     public class OrderRepository : IOrderRepository
     {
         private readonly BookStoreDbContext _db;
-
-        public OrderRepository(BookStoreDbContext db)
+        private readonly IBookRepository _bookRepository;
+        public OrderRepository(BookStoreDbContext db, IBookRepository bookRepository)
         {
             _db = db;
+            _bookRepository = bookRepository;
         }
-        public void Create(Orders item)
+        public async Task Create(Orders item)
         {
-            _db.Orders.Add(item);
+            await _db.Orders.AddAsync(item);
+            await Save();
+
         }
 
         public void Delete(int id)
@@ -41,14 +46,16 @@ namespace TestTaskCASPEL.Repository
             return await _db.Orders.Where(num => num.ID == number).Include(x => x.Books).ToListAsync();
         }
 
-        public async Task<List<Orders>> GetOrdersByDate(DateOnly date)
+        public async Task<List<Orders>> GetOrdersByDate(DateTime date)
         {
             return await _db.Orders.Where(d => d.OrderDate == date).Include(x => x.Books).ToListAsync();
         }
 
         public async Task Save()
         {
-             await _db.SaveChangesAsync();
+
+            await _db.SaveChangesAsync();
+
         }
 
         public void Update(Orders item)
@@ -73,6 +80,20 @@ namespace TestTaskCASPEL.Repository
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public async Task<Orders> CreateOrderByBooksId(int[] booksId)
+        {
+            var books = await _bookRepository.GetBooksById(booksId);
+
+            var order = new Orders
+            {
+                Books = books,
+                OrderDate = DateTime.UtcNow
+            };
+            await _db.Orders.AddAsync(order);
+            await Save();
+            return order;
         }
     }
 }

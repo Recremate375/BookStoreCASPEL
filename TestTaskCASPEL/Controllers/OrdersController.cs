@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestTaskCASPEL.DTO.Order;
+using TestTaskCASPEL.Models;
 using TestTaskCASPEL.Repository.IRepository;
 
 namespace TestTaskCASPEL.Controllers
@@ -30,7 +31,7 @@ namespace TestTaskCASPEL.Controllers
                 return NoContent();
             }
 
-            var ordersDTO = _mapper.Map<OrderDTO>(orders);
+            var ordersDTO = _mapper.Map<List<OrderDTO>>(orders);
 
             return Ok(ordersDTO);
         }
@@ -50,6 +51,14 @@ namespace TestTaskCASPEL.Controllers
             var ordersDTO = _mapper.Map<OrderDTO>(orders);
 
             return Ok(ordersDTO);
+        }
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<IActionResult> CreateOrder([FromBody] int[] booksIds)
+        {
+            var order = await _orderRepository.CreateOrderByBooksId(booksIds);
+            var response = _mapper.Map<OrderDTO>(order);
+            return CreatedAtAction("GetOrdersById", new { id = response.ID }, response);
         }
     }
 }

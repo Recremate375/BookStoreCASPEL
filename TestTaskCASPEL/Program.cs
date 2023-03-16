@@ -7,29 +7,29 @@ using TestTaskCASPEL.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 #region Configure MSSQL
 
-builder.Services.AddDbContext<BookStoreDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("BookStoreConnectionString")));
+builder.Services.AddDbContext<BookStoreDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 #endregion
 
 #region Configure AutoMapper
 
-builder.Services.AddAutoMapper(typeof (MappingProfile));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 #endregion
 
 #region
 
-builder.Services.AddTransient<IBookRepository, BookRepository>();
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+builder.Services.AddTransient<IBookRepository, BookRepository>();
 
 #endregion
+
+builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
