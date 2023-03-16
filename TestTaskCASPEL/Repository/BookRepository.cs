@@ -13,14 +13,14 @@ namespace TestTaskCASPEL.Repository
             _db = db;
         }
 
-        public async Task<List<Books>> GetBooksByName(string name)
+        public async Task<List<Book>> GetBooksByName(string name)
         {
             return await _db.Books.Where(x => x.BookName == name).ToListAsync();
         }
 
         public bool IsBookExist(string name)
         {
-            Books book = _db.Books.Find(name);
+            Book book = _db.Books.Find(name);
             if(book == null)
             {
                 return false;
@@ -28,35 +28,35 @@ namespace TestTaskCASPEL.Repository
             return true;
         }
 
-        public async Task<List<Books>> GetBooksByDate(DateTime releaseDate)
+        public async Task<List<Book>> GetBooksByDate(DateTime releaseDate)
         {
             return await _db.Books.Where(x => x.ReleaseDate == releaseDate).ToListAsync();
         }
 
-        public async Task<List<Books>> GetAll()
+        public async Task<List<Book>> GetAll()
         {
             return await _db.Books.ToListAsync();
         }
 
-        public async Task<Books> GetByID(int id)
+        public async Task<Book> GetByID(int id)
         {
             return await _db.Books.FindAsync(id);
         }
 
-        public async Task Create(Books item)
+        public async Task Create(Book item)
         {
             _db.Books.Add(item);
             await Save();
         }
 
-        public void Update(Books item)
+        public void Update(Book item)
         {
             _db.Entry(item).State = EntityState.Modified;
         }
 
         public void Delete(int id)
         {
-            Books book = _db.Books.Find(id);
+            Book book = _db.Books.Find(id);
             if (book != null)
             {
                 _db.Books.Remove(book);
@@ -87,7 +87,7 @@ namespace TestTaskCASPEL.Repository
             GC.SuppressFinalize(this);
         }
 
-        public async Task<List<Books>> GetBooksById(int[] id)
+        public async Task<List<Book>> GetBooksById(int[] id)
         {
             return await _db.Books.Where(book => id.Contains(book.ID)).ToListAsync();
         }

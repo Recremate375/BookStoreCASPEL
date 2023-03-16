@@ -10,12 +10,12 @@ namespace TestTaskCASPEL.Common
         public MappingProfile()
         {
                    //Source, Destination
-            CreateMap<Books, CreateBookDTO>().ReverseMap();
-            CreateMap<Books, BookDTO>().ReverseMap();
-            CreateMap<Books, UpdateBookDTO>().ReverseMap();
-            CreateMap<Orders, CreateOrderDTO>().ReverseMap();
-            CreateMap<Orders, OrderDTO>().ReverseMap();
-            CreateMap<Orders, UpdateOrderDTO>().ReverseMap();
+            CreateMap<Book, CreateBookDTO>().ReverseMap();
+            CreateMap<Book, BookDTO>().ReverseMap();
+            CreateMap<Book, UpdateBookDTO>().ReverseMap();
+            CreateMap<Order, CreateOrderDTO>().ReverseMap();
+            CreateMap<Order, OrderDTO>().ReverseMap();
+            CreateMap<Order, UpdateOrderDTO>().ReverseMap();
         }
     }
 }

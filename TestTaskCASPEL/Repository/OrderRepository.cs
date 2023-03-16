@@ -16,7 +16,7 @@ namespace TestTaskCASPEL.Repository
             _db = db;
             _bookRepository = bookRepository;
         }
-        public async Task Create(Orders item)
+        public async Task Create(Order item)
         {
             await _db.Orders.AddAsync(item);
             await Save();
@@ -25,28 +25,28 @@ namespace TestTaskCASPEL.Repository
 
         public void Delete(int id)
         {
-            Orders order = _db.Orders.Find(id);
+            Order order = _db.Orders.Find(id);
             if(order != null)
             {
                 _db.Orders.Remove(order);
             }
         }
-        public async Task<List<Orders>> GetAll()
+        public async Task<List<Order>> GetAll()
         {
             return await _db.Orders.Include(x => x.Books).ToListAsync();
         }
 
-        public async Task<Orders> GetByID(int id)
+        public async Task<Order> GetByID(int id)
         {
-            return await _db.Orders.FindAsync(id);
+            return await _db.Orders.Include(b => b.Books).FirstOrDefaultAsync(x => x.ID == id);
         }
 
-        public async Task<List<Orders>> GetOdersByNumber(int number)
+        public async Task<List<Order>> GetOdersByNumber(int number)
         {
             return await _db.Orders.Where(num => num.ID == number).Include(x => x.Books).ToListAsync();
         }
 
-        public async Task<List<Orders>> GetOrdersByDate(DateTime date)
+        public async Task<List<Order>> GetOrdersByDate(DateTime date)
         {
             return await _db.Orders.Where(d => d.OrderDate == date).Include(x => x.Books).ToListAsync();
         }
@@ -58,7 +58,7 @@ namespace TestTaskCASPEL.Repository
 
         }
 
-        public void Update(Orders item)
+        public void Update(Order item)
         {
             _db.Entry(item).State = EntityState.Modified;
         }
@@ -82,11 +82,11 @@ namespace TestTaskCASPEL.Repository
             GC.SuppressFinalize(this);
         }
 
-        public async Task<Orders> CreateOrderByBooksId(int[] booksId)
+        public async Task<Order> CreateOrderByBooksId(int[] booksId)
         {
             var books = await _bookRepository.GetBooksById(booksId);
 
-            var order = new Orders
+            var order = new Order
             {
                 Books = books,
                 OrderDate = DateTime.UtcNow

@@ -2,10 +2,10 @@
 
 namespace TestTaskCASPEL.Models
 {
-    public class Orders
+    public class Order
     {
         public int ID { get; set; }
-        public List<Books>? Books { get; set; } = new();
+        public List<Book>? Books { get; set; } = new();
         public DateTime OrderDate { get; set; }
     }
 }

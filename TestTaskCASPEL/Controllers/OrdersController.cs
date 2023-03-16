@@ -41,7 +41,7 @@ namespace TestTaskCASPEL.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrdersByID(int id)
         {
-            var orders = _orderRepository.GetOdersByNumber(id);
+            var orders = _orderRepository.GetByID(id);
 
             if (orders == null)
             {

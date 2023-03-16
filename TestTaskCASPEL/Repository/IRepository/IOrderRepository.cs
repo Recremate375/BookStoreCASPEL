@@ -3,10 +3,10 @@ using TestTaskCASPEL.Models;
 
 namespace TestTaskCASPEL.Repository.IRepository
 {
-    public interface IOrderRepository : IBaseRepository<Orders>
+    public interface IOrderRepository : IBaseRepository<Order>
     {
-        Task<List<Orders>> GetOdersByNumber(int number);
-        Task<List<Orders>> GetOrdersByDate(DateTime date);
-        Task<Orders> CreateOrderByBooksId(int[] booksId);
+        Task<List<Order>> GetOdersByNumber(int number);
+        Task<List<Order>> GetOrdersByDate(DateTime date);
+        Task<Order> CreateOrderByBooksId(int[] booksId);
     }
 }

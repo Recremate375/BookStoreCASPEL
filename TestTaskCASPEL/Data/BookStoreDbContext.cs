@@ -7,7 +7,7 @@ namespace TestTaskCASPEL.Data
     {
         public BookStoreDbContext(DbContextOptions options) : base(options)
         { }
-        public DbSet<Books> Books { get; set; }
-        public DbSet<Orders> Orders { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }
