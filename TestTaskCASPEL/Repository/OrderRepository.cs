@@ -33,7 +33,7 @@ namespace TestTaskCASPEL.Repository
         }
         public async Task<List<Orders>> GetAll()
         {
-            return await _db.Orders.ToListAsync();
+            return await _db.Orders.Include(x => x.Books).ToListAsync();
         }
 
         public async Task<Orders> GetByID(int id)
