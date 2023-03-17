@@ -26,11 +26,12 @@ namespace TestTaskCASPEL.Controllers
         public async Task<ActionResult<IEnumerable<OrderDTO>>> GetAllOrders()
         {
             var orders = await _orderRepository.GetAll();
+
             if (orders == null)
             {
                 return NoContent();
             }
-
+            
             var ordersDTO = _mapper.Map<List<OrderDTO>>(orders);
 
             return Ok(ordersDTO);
@@ -41,17 +42,34 @@ namespace TestTaskCASPEL.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrdersByID(int id)
         {
-            var orders = _orderRepository.GetByID(id);
+            var orders = await _orderRepository.GetOdersByNumber(id);
 
             if (orders == null)
             {
                 return NoContent();
             }
 
-            var ordersDTO = _mapper.Map<OrderDTO>(orders);
+            var ordersDTO = _mapper.Map<List<OrderDTO>>(orders);
 
             return Ok(ordersDTO);
         }
+
+        [HttpGet("{date:Datetime}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult<IEnumerable<OrderDTO>>> GetOrdersByDate(DateTime date)
+        {
+            var orders = await _orderRepository.GetOrdersByDate(date);
+            if (orders == null)
+            {
+                return NoContent();
+            }
+
+            var ordersDTO = _mapper.Map<List<OrderDTO>>(orders);
+
+            return Ok(orders);
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> CreateOrder([FromBody] int[] booksIds)

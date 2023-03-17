@@ -38,7 +38,7 @@ namespace TestTaskCASPEL.Repository
 
         public async Task<Order> GetByID(int id)
         {
-            return await _db.Orders.Include(b => b.Books).FirstOrDefaultAsync(x => x.ID == id);
+            return await _db.Orders.Include(b => b.Books).FirstAsync(x => x.ID == id);
         }
 
         public async Task<List<Order>> GetOdersByNumber(int number)
@@ -48,7 +48,7 @@ namespace TestTaskCASPEL.Repository
 
         public async Task<List<Order>> GetOrdersByDate(DateTime date)
         {
-            return await _db.Orders.Where(d => d.OrderDate == date).Include(x => x.Books).ToListAsync();
+            return await _db.Orders.Where(d => d.OrderDate.Date == date.Date).Include(x => x.Books).ToListAsync();
         }
 
         public async Task Save()
